@@ -3,12 +3,12 @@ import socketserver
 class TCPHandler(socketserver.BaseRequestHandler):
 	
 	def handle(self):
-		data = self.rfile.readline().strip()
+		data = self.request.recv(1024).strip()
 		print('Got {}'.format(data))
-		self.request.sendall('Hello World!')
+		self.request.sendall(b'Hello World!')
 
 if __name__ == '__main__':
-	HOST, PORT = 'localhost', 6000
+	HOST, PORT = '0.0.0.0', 6000
 
-	server = socketserver.TCPServer((HOST, PORT), /*My*/TCPHandler)
+	server = socketserver.TCPServer((HOST, PORT), TCPHandler)
 	server.serve_forever()
